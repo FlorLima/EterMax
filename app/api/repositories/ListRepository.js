@@ -1,34 +1,58 @@
 const SongList = require("../models/SongList");
-//supposing that title(song) and name(list) are key.
+//supposing that title & artist & album(song) and name(list) are key.
 class ListRepository{
 
     constructor(){
-        this.lists = {};
+        this.lists = [];
     }
 
     AddSong(name, newSong){
+        let index = this.FindIndex(name);
         //this will add a song to a list
-        this.lists[name].songs.push(newSong);
+        this.lists[index].songs.push(newSong);
     }
+
     DeleteSong(name, idSong){
         //delete existing song from a list
     }
 
-    GetLists(){
-       return this.lists;
+    Find(name){
+        
+        for (const list in this.lists) {
+            if(this.lists[list].name == name){
+                console.log(`Found element`);
+                console.log(this.lists[list])
+                return this.lists[list];
+            }
+        }   
+       return null;
     }
-
+    //helper methods
+    FindIndex(name){
+        for (const list in this.lists) {
+            if(this.lists[list].name == name){
+                console.log(`Found index`);
+                return list;
+            }
+        }   
+       return -1;
+    }
     AddList(name){
         //this will create a new list
-        this.lists[name] = (new SongList(name));
+        this.lists.push(new SongList(name));
         
     }
     
     DeleteList(name){
+        let index = this.FindIndex(name);
         //Delete a list
-        let deletedSong = this.lists[name];
-        delete this.lists[name];
+        let deletedSong = this.lists[index];
+        delete this.lists[index];
         return deletedSong;
+    }
+
+    GetLists(){
+        return this.lists;
     }
 }
 
