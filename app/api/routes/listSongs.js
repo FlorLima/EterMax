@@ -8,12 +8,11 @@ const  Validations = require('../services/Validation');
 const router = express.Router();
 const listSongService = new  Service(new Repository(), new Validator([new Validations.ValidationTitle(), new Validations.ValidationAlbum(), new Validations.ValidationArtist()]), new Validator([ new Validations.ValidationList()]));
 
-router.get('/lists' ,(request, response) => {
-    response.send(listSongService.GetLists());
+router.get('/' ,(request, response) => {
+    response.send(listSongService.GetLists(request.query));
 });
 
 router.post('/', (request, response) => {
-    console.log(request.body['name'])
     response.send(listSongService.AddList(request.body['name']));
 });
 
@@ -24,6 +23,11 @@ router.put('/', (request, response) => {
 router.delete('/', (request, response) => {
     response.send(listSongService.DeleteList(request.body['name']));
 });
+
+router.delete('/song', (request, response) => {
+    response.send(listSongService.DeleteSong(request.body['name'], request.body['song']))
+});
+
 
 
 module.exports = router;

@@ -67,7 +67,7 @@ class ListService{
             return {status: false, errors: "The list name was not found\n"};
         }
 
-        if(!this.DoesSongExist(list, newSong)){
+        if(this.DoesSongExist(list, newSong) == -1){
             console.log(`Adding new song to ${list.name}`);
             this.repository.AddSong(name, newSong);
             return  {status: true, errors: null};
@@ -76,18 +76,59 @@ class ListService{
         }
     }
 
-    GetLists(){
-        return {status: true, lists: this.repository.GetLists()};
+    DeleteSong(name, song){
+        let validationRes = this.listValidator.RunValidations({name: name});
+        if(validationRes){
+            return {status: false, errors: validationRes}
+        }
+
+        let foundList = this.repository.Find(name);
+        if(foundList == null){
+            return {status: false, errors: "The list name doesn't exist."}
+        }
+        let songExist = this.DoesSongExist(foundList, song);
+        if(songExist == -1){
+            return {status: false, errors:`The song doesn't belong to ${foundList.name} list`}
+        }
+
+        let deletedItem = this.repository.DeleteSong(name, song);
+        return {status: true, deletedItem: deletedItem}
     }
 
+    // GetLists(){
+    //     return {status: true, lists: this.repository.GetLists()};
+    // }
+    GetLists(song){
+        
+        if(!song || Object.keys(song).length === 0){
+            console.log("no query")
+            return {status: true, lists: this.repository.GetLists()};
+        }
+
+        let lists = this.repository.GetLists();
+        if(!lists){
+            return {status: false, errors: "There are no lists"};
+        }
+
+        let foundLists = []
+        for (const listIndex in lists) {
+            if(this.DoesSongExist(lists[listIndex], song) != -1){
+                foundLists.push(lists[listIndex].name);
+            }
+        }
+        console.log(foundLists)
+        return {status: true, lists: foundLists};
+
+    }
     DoesSongExist(list, newSong){
         for (const songIndex in list.songs) {
             let currSong = list.songs[songIndex]
-            if (currSong.title == newSong.title && currSong.artist == newSong.artist && currSong.album == newSong.album) {
-                return true;
+            if (currSong.title === newSong.title && currSong.artist === newSong.artist && currSong.album === newSong.album) {
+                console.log(`Found!`)
+                return songIndex;
             }
         }
-        return false;
+        return -1;
     }
 }
 

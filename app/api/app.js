@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/api/example', example);
-app.use('/api/listSongs', listSongs);
+app.use('/api/lists', listSongs);
 
 
 module.exports = app;

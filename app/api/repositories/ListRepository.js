@@ -12,8 +12,22 @@ class ListRepository{
         this.lists[index].songs.push(newSong);
     }
 
-    DeleteSong(name, idSong){
+    DeleteSong(name, currSong){
         //delete existing song from a list
+        for (const listInd in this.lists) {
+            if(this.lists[listInd].name == name){
+                for(const songInd in this.lists[listInd].songs){
+                    
+                    let nextSong = this.lists[listInd].songs[songInd];
+                    if (currSong.title ==  nextSong.title && currSong.artist == nextSong.artist && currSong.album == nextSong.album) {
+                        this.lists[listInd].songs.splice(songInd, 1);
+                        return nextSong;
+                    }
+                }
+            }
+        } 
+
+        return null;
     }
 
     Find(name){
