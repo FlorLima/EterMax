@@ -47,7 +47,7 @@ class ListRepository{
         let index = this.FindIndex(name);
         //Delete a list
         let deletedSong = this.lists[index];
-        delete this.lists[index];
+        this.lists.splice(index, 1);
         return deletedSong;
     }
 
