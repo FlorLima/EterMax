@@ -95,9 +95,6 @@ class ListService{
         return {status: true, deletedItem: deletedItem}
     }
 
-    // GetLists(){
-    //     return {status: true, lists: this.repository.GetLists()};
-    // }
     GetLists(song){
         
         if(!song || Object.keys(song).length === 0){
