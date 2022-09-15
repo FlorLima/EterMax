@@ -93,7 +93,7 @@ class ListService{
         }
 
         let deletedItem = this.repository.DeleteSong(name, song);
-        return {status: true, deletedItem: deletedItem}
+        return {status: true, deletedItem: deletedItem, errors: null}
     }
 
     GetLists(song){

@@ -7,6 +7,9 @@ class UserService{
 
     Authenticate(user, response){
 
+        if(!user || !user.email || !user.password){
+            return {status: false, errors: "The credentials are empty"}
+        }
         const token = jwt.sign({user},this.secrectKey);
 
         if(!token){
