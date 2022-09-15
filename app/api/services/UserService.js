@@ -8,6 +8,7 @@ class UserService{
     Authenticate(user, response){
 
         const token = jwt.sign({user},this.secrectKey);
+
         if(!token){
             return {token:token, errors: "Token is empty"} ;
         }
@@ -17,6 +18,7 @@ class UserService{
     Verify(token){
        try{
             const decoded = jwt.verify(token,this.secrectKey);
+            
             return decoded;
        }catch(ex){
             console.log(ex)

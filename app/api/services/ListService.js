@@ -12,6 +12,7 @@ class ListService{
     }
 
     AddList(name){
+        console.log(name)
         let listValidationResult = this.listValidator.RunValidations({name: name});
         //sanitize data
         if(listValidationResult){
@@ -24,7 +25,7 @@ class ListService{
         if(list != null){
             return { status: false, errors: "That list name already exists!\n"};
         }
-
+        
         this.repository.AddList(name);
         return { status: true, errors: null };
     }

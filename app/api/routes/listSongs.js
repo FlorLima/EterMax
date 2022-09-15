@@ -12,7 +12,6 @@ const userService = new UserService.userService('secretkey');
 const listSongService = new  Service( new Repository(), new Validator([new Validations.ValidationTitle(), new Validations.ValidationAlbum(), new Validations.ValidationArtist()]), new Validator([ new Validations.ValidationList()]));
 
 router.get('/' , UserService.verify ,(request, response) => {
-
     if(userService.Verify(request.token) !== undefined){
         response.send(listSongService.GetLists(request.query));
     }else{
@@ -20,16 +19,17 @@ router.get('/' , UserService.verify ,(request, response) => {
     }
 });
 
-router.post('/', (request, response) => {
-
+router.post('/', UserService.verify ,(request, response) => {
+    console.log('here')
     if(userService.Verify(request.token) !== undefined){
+        
         response.send(listSongService.AddList(request.body['name']));
     }else{
         response.sendStatus(403);
     }
 });
 
-router.put('/', (request, response) => {
+router.put('/',UserService.verify ,(request, response) => {
 
     if(userService.Verify(request.token) !== undefined){
         response.send(listSongService.AddSong(request.body['name'], request.body['newSong']));
@@ -38,7 +38,7 @@ router.put('/', (request, response) => {
     }
 });
 
-router.delete('/', (request, response) => {
+router.delete('/', UserService.verify,(request, response) => {
     if(userService.Verify(request.token) !== undefined){
         response.send(listSongService.DeleteList(request.body['name']));
     }else{
@@ -46,7 +46,7 @@ router.delete('/', (request, response) => {
     }
 });
 
-router.delete('/song', (request, response) => {
+router.delete('/song', UserService.verify ,(request, response) => {
     if(userService.Verify(request.token) !== undefined){
         response.send(listSongService.DeleteSong(request.body['name'], request.body['song']))
     }else{

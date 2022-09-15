@@ -6,7 +6,7 @@ const userService = new UserService.userService('secretkey')
 
 router.post('/' ,(request, response) => {
     const user = request.body;
-    
+    console.log(user)
     response.json(userService.Authenticate(user));
 });
 
